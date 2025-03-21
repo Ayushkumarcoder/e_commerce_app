@@ -4,6 +4,7 @@ import { backendUrl, currency } from '../App';
 import { toast } from 'react-toastify';
 
 
+
 const List = ({token}) => {
 
     const [list, setList] = useState([]);
@@ -48,9 +49,12 @@ const List = ({token}) => {
         }
     }
 
-    useEffect(()=>{
-        removeProduct();
-    },[])
+
+    // fuction to add all the products from the product.js in assets
+
+    
+
+    
 
   return (
     <>
