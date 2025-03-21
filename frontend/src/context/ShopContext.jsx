@@ -26,6 +26,9 @@ const ShopContextProvider = (prop) =>{
     //for cart 
     const [cartItems, setCartItems] = useState({});
 
+    //for login 
+    const [token, setToken] = useState("");
+
     const addToCart = async(itemId, size) =>{
 
         if(!size){
@@ -118,6 +121,12 @@ const ShopContextProvider = (prop) =>{
         getProductsData();
     },[])
 
+    useEffect(()=>{
+        if(!token && localStorage.getItem('token')){
+            setToken(localStorage.getItem('token'));
+        }
+    })
+
 
 
     const value = {                  //this is the atom with the value which is being passed
@@ -128,6 +137,7 @@ const ShopContextProvider = (prop) =>{
         getCartAmount,
         navigate,
         backednUrl,
+        token, setToken
     }
 
     return (
