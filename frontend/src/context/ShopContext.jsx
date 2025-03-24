@@ -28,6 +28,7 @@ const ShopContextProvider = (prop) =>{
 
     //for login 
     const [token, setToken] = useState("");
+    
 
     const addToCart = async(itemId, size) =>{
 
@@ -36,21 +37,53 @@ const ShopContextProvider = (prop) =>{
             return;
         }
 
-        setCartItems(prevCartItems => {
-            let cartData = { ...prevCartItems };
+        // setCartItems(prevCartItems => {
+        //     let cartData = { ...prevCartItems };
     
-            if (cartData[itemId]) {
-                if (cartData[itemId][size]) {
-                    cartData[itemId][size] += 1;
-                } else {
-                    cartData[itemId][size] = 1;
-                }
-            } else {
-                cartData[itemId] = { [size]: 1 };
-            }
+        //     if (cartData[itemId]) {
+        //         if (cartData[itemId][size]) {
+        //             cartData[itemId][size] += 1;
+        //         } else {
+        //             cartData[itemId][size] = 1;
+        //         }
+        //     } else {
+        //         cartData[itemId] = { [size]: 1 };
+        //     }
             
-            return cartData;
-        });
+        //     return cartData;
+        // });
+
+        let cartData = structuredClone(cartItems);
+
+        if(cartData[itemId]){
+            if(cartData[itemId][size]){
+                cartData[itemId][size] += 1;
+            }else{
+                cartData[itemId][size] = 1;
+            }
+        }else{
+            cartData[itemId] = {}
+            cartData[itemId][size] = 1;
+        }
+
+        setCartItems(cartData);
+
+        //if we are logged in then add that cart items in the backend as well
+        //connecting the backend to the frontend
+
+        if(token){
+            try {
+
+                await axios.post(backednUrl + '/api/cart/add', {itemId, size}, {headers: {token}});
+                
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message)
+                
+            }
+        }
+
+
     }
 
     const getCartCount = () =>{
@@ -70,7 +103,7 @@ const ShopContextProvider = (prop) =>{
     }
 
     useEffect(()=>{
-        console.log(cartItems);
+        ;
     },[cartItems])
 
 
