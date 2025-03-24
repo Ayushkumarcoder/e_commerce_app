@@ -119,6 +119,23 @@ const ShopContextProvider = (prop) =>{
 
         cartData[itemId][size] = quantity;
         setCartItems(cartData);
+
+        try {
+
+            if(token){
+                const response = await axios.post(backednUrl + '/api/cart/update', {itemId, size, quantity}, {headers: {token}});
+                if(response.data.success){
+                    console.log('Cart Updated in Database');
+                }else{
+                    toast.error(response.data.message || 'Failed to update cart in database');
+                }
+            }
+            
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || error.message || 'Failed to update cart');
+            
+        }
     }
 
     const getCartAmount = () =>{
@@ -157,6 +174,22 @@ const ShopContextProvider = (prop) =>{
         }
     }
 
+    const getUserCart = async(token) => {
+        try {
+
+            const response = await axios.post(backednUrl + '/api/cart/get',{}, {headers: {token}});
+
+            if(response.data.success){
+                setCartItems(response.data.cartData);
+            }
+            
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+            
+        }
+    }
+
     useEffect(()=>{
         getProductsData();
     },[])
@@ -164,8 +197,12 @@ const ShopContextProvider = (prop) =>{
     useEffect(()=>{
         if(!token && localStorage.getItem('token')){
             setToken(localStorage.getItem('token'));
+            getUserCart(localStorage.getItem('token'));
+
         }
-    })
+    },[])
+
+
 
 
 

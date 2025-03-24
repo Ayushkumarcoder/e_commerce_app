@@ -122,7 +122,7 @@ const updateCart = async ()=>{
 
 //get user cart data
 
-const getUserCart = async ()=>{
+const getUserCart = async (req, res)=>{
 
     try {
 
