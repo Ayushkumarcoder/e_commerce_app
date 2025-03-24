@@ -74,11 +74,18 @@ const ShopContextProvider = (prop) =>{
         if(token){
             try {
 
-                await axios.post(backednUrl + '/api/cart/add', {itemId, size}, {headers: {token}});
+                const response = await axios.post(backednUrl + '/api/cart/add', {itemId, size}, {headers: {token}});
                 
+                if (response.data.success) {
+                    // Cart updated successfully
+                    console.log("Cart updated in database");
+                } else {
+                    toast.error(response.data.message || 'Failed to update cart in database');
+                }
+
             } catch (error) {
-                console.log(error);
-                toast.error(error.message)
+                console.error("Cart update error:", error);
+                toast.error(error.response?.data?.message || error.message || 'Failed to update cart');
                 
             }
         }
