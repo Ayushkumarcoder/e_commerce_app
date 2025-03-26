@@ -97,7 +97,7 @@ const addToCart = async (req, res) => {
 
 //update user Cart
 
-const updateCart = async ()=>{
+const updateCart = async (req, res)=>{
 
     try {
 
