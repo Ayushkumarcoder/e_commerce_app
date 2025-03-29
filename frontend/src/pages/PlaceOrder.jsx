@@ -71,8 +71,20 @@ const PlaceOrder = () => {
             }else{
               toast.error(response.data.message);
             } 
+            break;
 
-          
+        case 'stripe':
+            const responseStripe = await axios.post(backednUrl + '/api/order/stripe', orderData, {headers:{token}});
+            if(responseStripe.data.success){
+              const {session_url} = responseStripe.data;
+
+              //if user is authenticated then it will give a session url 
+              //then we send the user to  that url to complete the payment
+
+              window.location.replace(session_url);
+            }else{
+              toast.error(responseStripe.data.message);
+            }
             break;
 
         default:
