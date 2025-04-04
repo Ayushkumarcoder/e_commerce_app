@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 //creating the token 
 
 const createToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET)
+    return jwt.sign({id}, process.env.JWT_SECRET, { expiresIn: '3d' })
 }
 
 //route for user login

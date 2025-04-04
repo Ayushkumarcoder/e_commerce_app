@@ -46,11 +46,9 @@ const Verify = () => {
         varifyPayment();
     },[token])
 
-  return (
-    <div>
-
-    </div>
-  )
+return (
+    <div>Verify Payment</div>
+)
 }
 
 export default Verify
