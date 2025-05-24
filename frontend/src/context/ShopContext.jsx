@@ -10,7 +10,7 @@ export const ShopContext = createContext();
 
 //function that acts as atom to pass the values
 const ShopContextProvider = (prop) =>{
-    const currency = '$';
+    const currency = '\u20B9';
     const delivery_fee = 10; //variables with values which will be passed
 
     //connecting backend to frontend
