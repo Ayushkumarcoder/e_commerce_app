@@ -123,4 +123,4 @@ const adminLogin = async(req, res) => {
     }
 }
 
-export {loginUser, registerUser, adminLogin,getAllOrders}
+export {loginUser, registerUser, adminLogin}
