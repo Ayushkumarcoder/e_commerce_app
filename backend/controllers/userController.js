@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import orderSchema from "../models/orderModel.js";
 
 //creating the token 
 
@@ -26,6 +27,7 @@ const loginUser = async(req, res)=>{
 
         if(isMatch){
             const token = createToken(user._id);
+            console.log("token",token);
             res.json({success: true, token});
 
         }else{
@@ -85,6 +87,18 @@ const registerUser = async(req, res) =>{
     }
 }
 
+// const getAllOrders = async(req, res) => {
+//     try{
+//         const orders = await orderSchema.findById(req.params.id);
+//         res.json({success: true, orders});  
+
+
+//     }
+//     catch(error){
+//         console.log(error);
+//         res.json({success: false, message: error.message});
+//     }   
+// }
 //route for admin login
 
 const adminLogin = async(req, res) => {
@@ -109,4 +123,4 @@ const adminLogin = async(req, res) => {
     }
 }
 
-export {loginUser, registerUser, adminLogin}
+export {loginUser, registerUser, adminLogin,getAllOrders}

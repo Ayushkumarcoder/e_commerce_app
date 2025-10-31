@@ -105,7 +105,12 @@ const verifyStripe = async(req, res) => {
         if(success === 'true'){
             await orderModel.findByIdAndUpdate(orderId, {payment: true});
             await userModel.findByIdAndUpdate(userId, {cartData: {}});
+            const res = await orderModel.updateOne(
+              { _id: orderId },
+              { $push: { orders: orderId } }
+            );
             res.json({success: true});
+            console.log("Order verified and added to user's orders",res);
         }else{
             await orderModel.findByIdAndDelete(orderId);
             res.json({success: false});
@@ -120,17 +125,16 @@ const verifyStripe = async(req, res) => {
 
 //placing order using Razorpay
 
-const placeOrderRazorpay = async (req, res) => {};
+// const placeOrderRazorpay = async (req, res) => {};
 
 //all orders data for admin panel
-
-const allOrders = async (req, res) => {
+const getUserOrders = async (req, res) => {
   try {
-    const orders = await orderModel.find({});
-    res.json({ success: true, orders });
+    const { userId } = req.params;
+    const orders = await orderModel.find({ userId }).sort({ date: -1 });
+    res.status(200).json(orders);
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -165,7 +169,7 @@ export {
   placeOrder,
   placeOrderStripe,
   placeOrderRazorpay,
-  allOrders,
+  getUserOrders,
   userOrders,
   updateStatus,
   verifyStripe,
